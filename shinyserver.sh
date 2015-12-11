@@ -42,3 +42,44 @@ $CLOUDSERVICENAME
 azure vm create $CLOUDSERVICENAME $IMAGENAME
 $USERNAME "$USERPASSWORD"  --ssh $SSHPORT --vn-name $VMNAME
 --virtual-network-name $VNETNAME --subnet-names $SUBNETNAME --blob-url "https://${STORAGEACCOUNT}.blob.core.windows.net/hdd/${VMNAME}-system"
+
+
+# Script to change the instance size in Azure
+
+Function HowTo-SetAzureVMSize{
+     [CmdletBinding()]
+     param(
+         [parameter(Mandatory=$true)]
+          [string]$ServiceName,
+          [parameter(Mandatory=$false)]
+          [ValidateNotNullOrEmpty()]
+          [string]$Name=$ServiceName,
+          [parameter(Mandatory=$true)]
+          [string]$VMSize
+     )
+     PROCESS{
+         Get-AzureVM –ServiceName $ServiceName –Name $Name | 
+             Set-AzureVMSize $VMSize | 
+             Update-AzureVM
+     }
+}
+HowTo-SetAzureVMSize –ServiceName "<your-vm>" –VMSize "Small"
+
+
+
+Extra Small (Shared core, 768 MB Memory) 
+
+Small (1 core, 1.75 GB Memory) 
+
+Medium (2 cores, 3.5 GB Memory) 
+
+Large (4 cores, 7 GB Memory) 
+
+Extra Large (8 cores, 14 GB Memory) 
+
+A6 (4 cores, 28 GB Memory) 
+
+A7 (8 cores, 56 GB Memory) 
+
+
+
